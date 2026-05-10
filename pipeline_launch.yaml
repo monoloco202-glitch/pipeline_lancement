@@ -1,0 +1,35 @@
+project:
+  name: N4_TRANS
+  local_workdir: transitoire
+
+remote:
+  ssh: mg2c30el@cronos.hpc.edf.fr
+  base_path: /scratch/users/mg2c30el/OE212/CALCUL_RP_SANS_IS_MR_test
+  workdir: transitoire
+  calculdir: "*_calcul"
+
+files:
+  dat_output: N4_TRANS.dat
+
+launch:
+  omp: 8                         # null si no se usa
+
+  steps:
+    - tag: "PASO1"
+      jdd: "PASO1.dat"
+      postpro: null              # null = sin postpro
+    - tag: "PASO2"
+      jdd: "PASO2.dat"
+      postpro: "POSTPRO_P2.dat"
+    - tag: "PASO3"
+      jdd: "PASO3.dat"
+      postpro: "POSTPRO_P3.dat"
+
+  slurm:
+    job_name: "N4_TRANS"
+    partition: "normal"
+    ntasks: 8
+    time: "24:00:00"
+    output: "slurm-%A_%a.out"
+
+  generation_script: "generation_sensi.sh"
